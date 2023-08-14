@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layout/main.html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<div layout:fragment="content">
+    <div class="card mt-2 mb-2">
+        <h5 class="card-header text-center" th:text="'TITLE: '+${task.getTitle()}"></h5>
+        <div class="card-body">
+            <h5 class="card-title text-center" th:text="'DESCRIPTION:'+${task.getDescription()}"></h5>
+            <div class="mx-auto text-center">
+                <button style="color: #0a53be; font-weight: bolder" th:if="${task.getStatus()==0}"
+                        th:text="'TO DO'"></button>
+                <button style="color:yellow ; font-weight: bolder" th:if="${task.getStatus()==1}"
+                        th:text="'IN TEST'"></button>
+                <button style="color: green; font-weight: bolder" th:if="${task.getStatus()==2}"
+                        th:text="'DONE'"></button>
+                <button style="color: red; font-weight: bolder" th:if="${task.getStatus()==3}"
+                        th:text="'FAILED'"></button>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex">
+        <form method="post" th:action="${'/editTask/'+task.id}">
+            <!-- Button trigger modal -->
+            <button class="btn btn-primary me-2" data-bs-target="#exampleModal" data-bs-toggle="modal"
+                    type="button">
+                Edit Task
+            </button>
+            <!-- Modal FOR Edit Task-->
+            <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal"
+                 tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">EDIT TASK</h1>
+                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                    type="button"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label>TITLE:</label>
+                            <input class="form-control" name="title" placeholder="Title" th:value="${task.getTitle()}"
+                                   type="text">
+                            <label>DESCRIPTION:</label>
+                            <textarea class="form-control" name="description"
+                                      placeholder="Description" th:placeholder="${task.getDescription()}"
+                                      th:value="${task.description}"></textarea>
+                            <label>STATUS:</label>
+                            <select class="form-select" name="status">
+                                <option style="color: #0a53be; font-weight: bolder" th:selected="${task.getStatus()==0}"
+                                        th:text="'TO DO'" th:value="0"></option>
+                                <option style="color:yellow ; font-weight: bolder" th:selected="${task.getStatus()==1}"
+                                        th:text="'IN TEST'" th:value="1"></option>
+                                <option style="color: green; font-weight: bolder" th:selected="${task.getStatus()==2}"
+                                        th:text="'DONE'" th:value="2"></option>
+                                <option style="color: red; font-weight: bolder" th:selected="${task.getStatus()==3}"
+                                        th:text="'FAILED'" th:value="3"></option>
+
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">CLOSE</button>
+                            <button class="btn btn-success" type="submit">EDIT TASK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" th:action="${'/deleteTask/'+task.id}">
+            <!-- Button trigger modal -->
+            <button class="btn btn-danger me-2" data-bs-target="#deleteTaskModal" data-bs-toggle="modal" type="button">
+                Delete Task
+            </button>
+
+            <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="deleteTaskModal"
+                 tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Удаление...</h1>
+                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                    type="button"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!--                        <input type="hidden" th:value="${task.folder.id}" name="taskFolderId">-->
+                            ВЫ УВЕРЕНЫ?
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">НЕТ</button>
+                            <button class="btn btn-success"
+                                    type="submit">ДА
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <form method="post" th:action="${'/addCommentToTask'}">
+            <!-- Button trigger modal -->
+            <button class="btn btn-primary me-2" data-bs-target="#commentModal" data-bs-toggle="modal"
+                    type="button">
+                Add Comment
+            </button>
+            <!-- Modal FOR ADD Comment-->
+            <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="commentModal"
+                 tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5"> ADD COMMENTARY</h1>
+                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                    type="button"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input name="task" th:value="${task.getId()}" type="hidden">
+                            <label>Comment:</label>
+                            <input class="form-control" name="comment" placeholder="Comment" type="text">
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">CLOSE</button>
+                            <button class="btn btn-success" type="submit">ADD COMMENT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <table class="table mt-2">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Comment</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment:${comments}">
+            <td th:text="${comment.getId()}"></td>
+            <td th:text="${comment.getComment()}"></td>
+            <td>
+                <form method="post" th:action="${'/deleteComment'}">
+                    <!-- Button trigger modal -->
+                    <button class="btn btn-danger me-2" data-bs-target="#deleteComment" data-bs-toggle="modal"
+                            type="button">
+                        Delete Comment
+                    </button>
+
+                    <!-- Modal FOR DELETING Comment-->
+                    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="deleteComment"
+                         tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">Удаление...</h1>
+                                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                            type="button"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input name="commentId" th:value="${comment.getId()}" type="hidden">
+                                    <input name="taskId" th:value="${task.id}" type="hidden">
+                                    ВЫ УВЕРЕНЫ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">НЕТ</button>
+                                    <button class="btn btn-success"
+                                            type="submit">ДА
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+</div>
+
+</html>

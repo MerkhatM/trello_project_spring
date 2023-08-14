@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layout/main.html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<div layout:fragment="content">
+
+
+    <form method="post" th:action="${'/addCategory'}">
+        <!-- Button trigger modal -->
+        <button class="btn btn-outline-secondary me-2" data-bs-target="#exampleModal" data-bs-toggle="modal"
+                type="button">
+            + New CATEGORY
+        </button>
+
+        <!-- Modal FOR ADD Category-->
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal"
+             tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">ADD CATEGORY</h1>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label>NAME:</label>
+                        <input name="name" placeholder="Name" type="text">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">CLOSE</button>
+                        <button class="btn btn-success" type="submit">Add Category</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <table class="table mt-2">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>CATEGORY NAME</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category:${categories}">
+            <td th:text="${category.getId()}"></td>
+            <td th:text="${category.getName()}"></td>
+            <td>
+                <form method="post" th:action="${'/deleteCategory'}">
+                    <!-- Button trigger modal -->
+                    <button class="btn btn-danger me-2" data-bs-target="#deleteModal" data-bs-toggle="modal"
+                            type="button">
+                        Delete Category
+                    </button>
+
+                    <!-- Modal FOR DELETING Category-->
+                    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="deleteModal"
+                         tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">Удаление...</h1>
+                                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                            type="button"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input name="categoryId" th:value="${category.getId()}" type="hidden">
+                                    ВЫ УВЕРЕНЫ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">НЕТ</button>
+                                    <button class="btn btn-success"
+                                            type="submit">ДА
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+</div>
+
+</html>
