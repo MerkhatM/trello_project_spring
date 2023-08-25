@@ -27,10 +27,14 @@ public class CommentService {
         commentRepos.save(comment1);
     }
 
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long commentId, Long taskId) {
         Comment comment = commentRepos.findById(commentId).orElse(null);
-        comment.setTask(null);
-        commentRepos.delete(comment);
+        if (comment == null)
+            return;
+        if (comment.getTask().getId() == taskId) {
+            comment.setTask(null);
+            commentRepos.delete(comment);
+        }
     }
 
 }

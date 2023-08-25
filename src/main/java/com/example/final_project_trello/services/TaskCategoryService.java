@@ -1,5 +1,6 @@
 package com.example.final_project_trello.services;
 
+import com.example.final_project_trello.models.Folder;
 import com.example.final_project_trello.models.TaskCategory;
 import com.example.final_project_trello.repositories.TaskCategoryRepos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import java.util.List;
 public class TaskCategoryService {
     @Autowired
     private TaskCategoryRepos taskCategoryRepos;
+    @Autowired
+    private FolderService folderService;
 
     public List<TaskCategory> getAllTaskCategories() {
         return taskCategoryRepos.findAll();
@@ -25,9 +28,14 @@ public class TaskCategoryService {
     }
 
     public void removeCategory(Long id) {
-        List<TaskCategory> taskCategories = getAllTaskCategories();
-        taskCategories.remove(getTaskCategoryById(id));
-        taskCategoryRepos.saveAll(taskCategories);
+        TaskCategory taskCategory=getTaskCategoryById(id);
+        List<Folder> folders=folderService.getAllFolders();
+        for (Folder f:
+             folders) {
+            f.getCategories().remove(taskCategory);
+            folderService.addFolder(f);
+        }
+        taskCategoryRepos.deleteById(id);
     }
 
 }

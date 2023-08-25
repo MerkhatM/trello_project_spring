@@ -6,6 +6,7 @@ import com.example.final_project_trello.repositories.FolderRepos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,10 +39,16 @@ public class FolderService {
 
     public void deleteCategoryFromFolder(Long folderId, Long taskCategory) {
         Folder folder = getFolderById(folderId);
-        TaskCategory taskCategory1 = taskCategoryService.getTaskCategoryById(taskCategory);
+        if(folder==null)
+            return;
         Set<TaskCategory> taskCategories = folder.getCategories();
-        taskCategories.remove(taskCategory1);
-        folder.setCategories(taskCategories);
+        Set<TaskCategory> newCategories=new HashSet<>();
+        for(TaskCategory category:taskCategories){
+            if(category.getId()!=taskCategory){
+                newCategories.add(category);
+            }
+        }
+        folder.setCategories(newCategories);
         folderRepos.save(folder);
     }
 }

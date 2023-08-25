@@ -46,15 +46,15 @@
             <td th:text="${category.getId()}"></td>
             <td th:text="${category.getName()}"></td>
             <td>
-                <form method="post" th:action="${'/deleteCategory'}">
+                <form method="post" th:action="${'/deleteCategory/'+category.id}">
                     <!-- Button trigger modal -->
-                    <button class="btn btn-danger me-2" data-bs-target="#deleteModal" data-bs-toggle="modal"
+                    <button class="btn btn-danger me-2"  th:attr="data-bs-target='#deleteModal-'+${category.id}" data-bs-target="#deleteModal" data-bs-toggle="modal"
                             type="button">
                         Delete Category
                     </button>
 
                     <!-- Modal FOR DELETING Category-->
-                    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="deleteModal"
+                    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" th:attr="id='deleteModal-'+${category.id}"
                          tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">

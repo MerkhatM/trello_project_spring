@@ -80,10 +80,10 @@ public class HomeController {
         return "redirect:/folderDetails/" + folderId;
     }
 
-    @PostMapping("/deleteCategories")
-    public String deleteCategoryFromFolder(@RequestParam Long folderId, @RequestParam Long categoryId) {
-        folderService.deleteCategoryFromFolder(folderId, categoryId);
-        return "redirect:/folderDetails/" + folderId;
+    @PostMapping("/deleteCategories/{id}")
+    public String deleteCategoryFromFolder(@PathVariable Long id, @RequestParam Long categoryId) {
+        folderService.deleteCategoryFromFolder(id, categoryId);
+        return "redirect:/folderDetails/" + id;
     }
 
     @GetMapping("/categories")
@@ -98,9 +98,9 @@ public class HomeController {
         return "redirect:/categories";
     }
 
-    @PostMapping("/deleteCategory")
-    public String deleteCategory(@RequestParam Long categoryId) {
-        taskCategoryService.removeCategory(categoryId);
+    @PostMapping("/deleteCategory/{id}")
+    public String deleteCategory(@PathVariable Long id) {
+        taskCategoryService.removeCategory(id);
         return "redirect:/categories";
     }
 
@@ -112,7 +112,7 @@ public class HomeController {
 
     @PostMapping("/deleteComment")
     public String deleteComment(@RequestParam Long commentId, @RequestParam Long taskId) {
-        commentService.deleteComment(commentId);
+        commentService.deleteComment(commentId,taskId);
         return "redirect:/taskDetails/" + taskId;
     }
 
