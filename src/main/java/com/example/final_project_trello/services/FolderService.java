@@ -39,12 +39,12 @@ public class FolderService {
 
     public void deleteCategoryFromFolder(Long folderId, Long taskCategory) {
         Folder folder = getFolderById(folderId);
-        if(folder==null)
+        if (folder == null)
             return;
         Set<TaskCategory> taskCategories = folder.getCategories();
-        Set<TaskCategory> newCategories=new HashSet<>();
-        for(TaskCategory category:taskCategories){
-            if(category.getId()!=taskCategory){
+        Set<TaskCategory> newCategories = new HashSet<>();
+        for (TaskCategory category : taskCategories) {
+            if (category.getId() != taskCategory) {
                 newCategories.add(category);
             }
         }

@@ -33,7 +33,7 @@ public class TaskService {
     }
 
     public void removeTask(Long id) {
-        Task task=getTaskById(id);
+        Task task = getTaskById(id);
         task.setFolder(null);
         taskRepos.save(task);
         taskRepos.deleteById(id);

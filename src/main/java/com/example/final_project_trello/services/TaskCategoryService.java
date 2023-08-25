@@ -28,10 +28,10 @@ public class TaskCategoryService {
     }
 
     public void removeCategory(Long id) {
-        TaskCategory taskCategory=getTaskCategoryById(id);
-        List<Folder> folders=folderService.getAllFolders();
-        for (Folder f:
-             folders) {
+        TaskCategory taskCategory = getTaskCategoryById(id);
+        List<Folder> folders = folderService.getAllFolders();
+        for (Folder f :
+                folders) {
             f.getCategories().remove(taskCategory);
             folderService.addFolder(f);
         }

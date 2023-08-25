@@ -112,7 +112,7 @@ public class HomeController {
 
     @PostMapping("/deleteComment")
     public String deleteComment(@RequestParam Long commentId, @RequestParam Long taskId) {
-        commentService.deleteComment(commentId,taskId);
+        commentService.deleteComment(commentId, taskId);
         return "redirect:/taskDetails/" + taskId;
     }
 
